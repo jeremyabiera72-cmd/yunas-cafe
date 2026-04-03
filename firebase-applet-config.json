@@ -1,0 +1,10 @@
+{
+  "projectId": "yuna-cafe",
+  "appId": "1:806970485933:web:544d61bf57a45cb0cfaa24",
+  "apiKey": "AIzaSyCNYkW_ESIhTHS7D1sRDkhznnffoe1e6rk",
+  "authDomain": "yuna-cafe.firebaseapp.com",
+  "firestoreDatabaseId": "(default)",
+  "storageBucket": "yuna-cafe.firebasestorage.app",
+  "messagingSenderId": "806970485933",
+  "measurementId": "G-FWCGHG7HSB"
+}

@@ -1,0 +1,66 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A coffee product in the menu",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Product name" },
+        "price": { "type": "number", "description": "Product price" },
+        "temperature": { "type": "string", "enum": ["Hot", "Cold"] },
+        "cupSizes": { "type": "array", "items": { "type": "string" } },
+        "sugarLevel": { "type": "string" },
+        "otherDetails": { "type": "string" },
+        "category": { "type": "string", "enum": ["Best Coffee Menu's", "Newest Coffee Menu's", "Other Menu's"] },
+        "imageUrl": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["name", "price", "temperature", "category", "createdAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A customer order",
+      "type": "object",
+      "properties": {
+        "orderNumber": { "type": "number", "description": "1-50" },
+        "orderId": { "type": "string", "description": "10001-10050" },
+        "firstName": { "type": "string" },
+        "lastName": { "type": "string" },
+        "email": { "type": "string" },
+        "address": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "cupSize": { "type": "string" },
+        "sugarLvl": { "type": "string" },
+        "additionalMessage": { "type": "string" },
+        "productId": { "type": "string" },
+        "productName": { "type": "string" },
+        "type": { "type": "string", "enum": ["Delivery", "Order in Area"] },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["firstName", "lastName", "email", "phoneNumber", "productId", "type", "createdAt"]
+    },
+    "Counter": {
+      "title": "Counter",
+      "description": "Sequence counter for order numbers",
+      "type": "object",
+      "properties": {
+        "value": { "type": "number" }
+      },
+      "required": ["value"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Coffee products"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Customer orders"
+    },
+    "/counters/{counterId}": {
+      "schema": "Counter",
+      "description": "Order sequence counters"
+    }
+  }
+}

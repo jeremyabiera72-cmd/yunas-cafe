@@ -1,0 +1,87 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    // Collection: products
+    // Fields: name, price, temperature, cupSizes, sugarLevel, otherDetails, category, imageUrl, createdAt
+    //
+    // Collection: orders
+    // Fields: orderNumber, orderId, firstName, lastName, email, address, phoneNumber, cupSize, sugarLvl, additionalMessage, productId, productName, type, createdAt
+    //
+    // Collection: messages
+    // Fields: firstName, lastName, email, message, createdAt
+    //
+    // Collection: counters
+    // Fields: value
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.email == "jeremyabiera72@gmail.com" ||
+         request.auth.uid == "zSUL3YuGBeVyeB5JnT6k4nD7gUE2" ||
+         (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'));
+    }
+
+    function isValidProduct(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
+             data.price is number && data.price >= 0 &&
+             data.temperature in ['Hot', 'Cold'] &&
+             data.category in ["Best Coffee Menu's", "Newest Coffee Menu's", "Other Menu's"] &&
+             data.createdAt is number;
+    }
+
+    function isValidOrder(data) {
+      return data.firstName is string && data.firstName.size() > 0 && data.firstName.size() < 50 &&
+             data.lastName is string && data.lastName.size() > 0 && data.lastName.size() < 50 &&
+             data.email is string && data.email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$") &&
+             data.phoneNumber is string && data.phoneNumber.size() >= 7 && data.phoneNumber.size() <= 15 &&
+             data.productId is string &&
+             data.type in ['Delivery', 'Order in Area'] &&
+             data.status in ['On Que', 'Complete', 'Delivering', 'Delivered'] &&
+             data.createdAt is number;
+    }
+
+    function isValidMessage(data) {
+      return data.firstName is string && data.firstName.size() > 0 && data.firstName.size() < 50 &&
+             data.lastName is string && data.lastName.size() > 0 && data.lastName.size() < 50 &&
+             data.email is string && data.email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$") &&
+             data.message is string && data.message.size() > 0 && data.message.size() < 2000 &&
+             data.createdAt is number;
+    }
+
+    // Rules
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAuthenticated() && (request.auth.token.email == "jeremyabiera72@gmail.com" || request.auth.uid == "zSUL3YuGBeVyeB5JnT6k4nD7gUE2");
+    }
+
+    match /orders/{orderId} {
+      allow read: if isAdmin();
+      allow create: if isValidOrder(request.resource.data);
+      allow update, delete: if isAdmin();
+    }
+
+    match /messages/{messageId} {
+      allow read, delete: if isAdmin();
+      allow create: if isValidMessage(request.resource.data);
+    }
+
+    match /counters/{counterId} {
+      allow read: if true;
+      allow write: if true; // In a production app, this should be more restricted, but for this demo it's needed for client-side increment
+    }
+
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow write: if isAdmin();
+    }
+  }
+}
