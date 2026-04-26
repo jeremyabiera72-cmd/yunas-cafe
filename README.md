@@ -1,20 +1,27 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+🌸 About the Project
 
-# Run and deploy your AI Studio app
+Café Haven is a stylish and elegant café website designed to showcase:
 
-This contains everything you need to run your app locally.
+☕ Delicious coffee and beverages
+🍰 Fresh pastries and desserts
+🪑 Cozy café ambiance
+📍 Store location and contact details
+📱 Responsive design for all devices
 
-View your app in AI Studio: https://ai.studio/apps/c76c2d5e-dce2-408d-862f-688e30cd0e97
+This project is perfect for portfolio showcase, café businesses, or learning frontend development.
 
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+✨ Features
+Beautiful and modern UI
+Smooth animations and hover effects
+Responsive design
+Interactive menu section
+About Us page
+Contact & Reservation section
+Gallery for café photos
+Customer reviews/testimonials
+🛠️ Built With
+HTML5
+CSS3
+JavaScript
+React.js (optional version)
+Tailwind CSS (optional version)
