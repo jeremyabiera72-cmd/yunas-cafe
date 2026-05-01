@@ -25,3 +25,6 @@ CSS3
 JavaScript
 React.js (optional version)
 Tailwind CSS (optional version)
+
+
+- Project done review(complete/fixed)
